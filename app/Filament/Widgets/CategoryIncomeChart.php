@@ -3,9 +3,9 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Renda;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Filament\Widgets\ChartWidget;
-use Filament\Tables\Table;
 
 class CategoryIncomeChart extends ChartWidget
 {
@@ -15,8 +15,8 @@ class CategoryIncomeChart extends ChartWidget
 
     protected static ?int $sort = 4;
 
-    // ✅ Filament 5 (NÃO static)
-    protected ?string $pollingInterval = '5s';
+    // ✅ Cache em vez de polling constante
+    protected ?string $pollingInterval = null;
 
     protected function getData(): array
     {
@@ -27,41 +27,45 @@ class CategoryIncomeChart extends ChartWidget
         $mesId = $filters['mes_id'] ?? null;
         $userId = $filters['user_id'] ?? auth()->id();
 
-        $query = Renda::query()
-            ->select([
-                'categoria_rendas.nome as category',
-                DB::raw('SUM(rendas.valor) as total')
-            ])
-            ->join('categoria_rendas', 'rendas.categoria_id', '=', 'categoria_rendas.id');
+        $cacheKey = "chart_income:{$anoId}:{$mesId}:{$userId}";
 
-        // 🔥 filtros dinâmicos
-        $query->when($anoId, fn ($q) => $q->where('rendas.ano_id', $anoId));
-        $query->when($mesId, fn ($q) => $q->where('rendas.mes_id', $mesId));
-        $query->when($userId, fn ($q) => $q->where('rendas.user_id', $userId));
+        return Cache::remember($cacheKey, 60, function () use ($anoId, $mesId, $userId) {
+            $query = Renda::query()
+                ->select([
+                    'categoria_rendas.nome as category',
+                    DB::raw('SUM(rendas.valor) as total')
+                ])
+                ->join('categoria_rendas', 'rendas.categoria_id', '=', 'categoria_rendas.id');
 
-        $data = $query
-            ->groupBy('categoria_rendas.id', 'categoria_rendas.nome')
-            ->orderByDesc('total')
-            ->get();
+            // 🔥 filtros dinâmicos
+            $query->when($anoId, fn ($q) => $q->where('rendas.ano_id', $anoId));
+            $query->when($mesId, fn ($q) => $q->where('rendas.mes_id', $mesId));
+            $query->when($userId, fn ($q) => $q->where('rendas.user_id', $userId));
 
-        return [
-            'datasets' => [
-                [
-                    'label' => 'Rendas',
-                    'data' => $data->pluck('total')->toArray(),
-                    'backgroundColor' => [
-                        '#22c55e',
-                        '#4ade80',
-                        '#86efac',
-                        '#bbf7d0',
-                        '#dcfce7',
-                        '#16a34a',
-                        '#15803d',
+            $data = $query
+                ->groupBy('categoria_rendas.id', 'categoria_rendas.nome')
+                ->orderByDesc('total')
+                ->get();
+
+            return [
+                'datasets' => [
+                    [
+                        'label' => 'Rendas',
+                        'data' => $data->pluck('total')->toArray(),
+                        'backgroundColor' => [
+                            '#22c55e',
+                            '#4ade80',
+                            '#86efac',
+                            '#bbf7d0',
+                            '#dcfce7',
+                            '#16a34a',
+                            '#15803d',
+                        ],
                     ],
                 ],
-            ],
-            'labels' => $data->pluck('category')->toArray(),
-        ];
+                'labels' => $data->pluck('category')->toArray(),
+            ];
+        });
     }
 
     protected function getType(): string

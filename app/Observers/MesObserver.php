@@ -8,6 +8,7 @@ use App\Models\RendaFixa;
 use App\Models\Despesa;
 use App\Models\Renda;
 use App\Models\Ano;
+use Illuminate\Support\Facades\DB;
 
 class MesObserver
 {
@@ -19,7 +20,8 @@ class MesObserver
         }
 
         // 🔴 DESPESAS FIXAS → DESPESAS DO MÊS
-        $despesasFixas = DespesaFixa::all();
+        // ✅ Otimização: seleciona apenas colunas necessárias para reduzir memória
+        $despesasFixas = DespesaFixa::select(['nome', 'valor', 'user_id', 'categoria_id'])->get();
 
         if ($despesasFixas->isNotEmpty()) {
             $despesas = $despesasFixas->map(fn ($fixa) => [
@@ -37,7 +39,8 @@ class MesObserver
         }
 
         // 🟢 RENDAS FIXAS → RENDAS DO MÊS
-        $rendasFixas = RendaFixa::all();
+        // ✅ Otimização: seleciona apenas colunas necessárias para reduzir memória
+        $rendasFixas = RendaFixa::select(['nome', 'valor', 'user_id', 'categoria_id'])->get();
 
         if ($rendasFixas->isNotEmpty()) {
             $rendas = $rendasFixas->map(fn ($fixa) => [
@@ -87,16 +90,18 @@ class MesObserver
     // 🔹 recalcula valores do ano
     private function recalcularAno($anoId): void
     {
+        if (!$anoId) {
+            return;
+        }
+
         $totalDespesa = Mes::where('ano_id', $anoId)->sum('despesa');
         $totalRenda = Mes::where('ano_id', $anoId)->sum('renda');
 
-        $ano = Ano::find($anoId);
-
-        if ($ano) {
-            $ano->despesa = $totalDespesa;
-            $ano->renda = $totalRenda;
-            $ano->total = $totalRenda - $totalDespesa;
-            $ano->save();
-        }
+        // ✅ Otimização: update direto sem carregar o model
+        Ano::where('id', $anoId)->update([
+            'despesa' => $totalDespesa,
+            'renda' => $totalRenda,
+            'total' => $totalRenda - $totalDespesa,
+        ]);
     }
 }

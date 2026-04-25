@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Renda;
 use App\Models\Mes;
+use Illuminate\Support\Facades\DB;
 
 class RendaObserver
 {
@@ -35,12 +36,16 @@ class RendaObserver
 
     private function recalcularMes($mesId): void
     {
-        $mes = Mes::find($mesId);
-
-        if ($mes) {
-            $mes->renda = Renda::where('mes_id', $mesId)->sum('valor');
-            $mes->total = $mes->renda - $mes->despesa;
-            $mes->save();
+        if (!$mesId) {
+            return;
         }
+
+        $totalRenda = Renda::where('mes_id', $mesId)->sum('valor');
+
+        // ✅ Otimização: update direto sem carregar o model
+        Mes::where('id', $mesId)->update([
+            'renda' => $totalRenda,
+            'total' => DB::raw("{$totalRenda} - despesa"),
+        ]);
     }
 }

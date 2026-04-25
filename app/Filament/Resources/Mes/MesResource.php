@@ -17,8 +17,8 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
-use App\Filament\Resources\MesResource\RelationManagers\DespesasRelationManager;
-use App\Filament\Resources\MesResource\RelationManagers\RendasRelationManager;
+use App\Filament\Resources\Mes\RelationManagers\DespesasRelationManager;
+use App\Filament\Resources\Mes\RelationManagers\RendasRelationManager;
 
 class MesResource extends Resource
 {
@@ -42,7 +42,8 @@ class MesResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return MesTable::configure($table);
+        return MesTable::configure($table)
+            ->modifyQueryUsing(fn ($query) => $query->with(['ano']));
     }
 
     public static function getRelations(): array

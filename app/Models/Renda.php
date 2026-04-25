@@ -10,7 +10,7 @@ class Renda extends Model
     protected $fillable = [
         'nome',
         'valor',
-        'user_id', 
+        'user_id',
         'categoria_id',
         'mes_id',
         'ano_id',
@@ -19,6 +19,11 @@ class Renda extends Model
     protected $casts = [
         'valor' => 'decimal:2',
     ];
+
+    /**
+     * Relações carregadas automaticamente para evitar N+1 queries.
+     */
+    protected $with = ['user', 'categoria', 'mes', 'ano'];
 
     public function user(): BelongsTo
     {

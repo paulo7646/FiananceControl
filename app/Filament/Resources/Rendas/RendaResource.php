@@ -39,7 +39,8 @@ class RendaResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return RendasTable::configure($table);
+        return RendasTable::configure($table)
+            ->modifyQueryUsing(fn ($query) => $query->with(['user', 'categoria', 'mes', 'ano']));
     }
 
     public static function getRelations(): array

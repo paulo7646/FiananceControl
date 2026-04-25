@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Despesa;
 use App\Models\Mes;
+use Illuminate\Support\Facades\DB;
 
 class DespesaObserver
 {
@@ -29,12 +30,16 @@ class DespesaObserver
 
     private function recalcularMes($mesId): void
     {
-        $mes = Mes::find($mesId);
-
-        if ($mes) {
-            $mes->despesa = Despesa::where('mes_id', $mesId)->sum('valor');
-            $mes->total = $mes->renda- $mes->despesa;
-            $mes->save();
+        if (!$mesId) {
+            return;
         }
+
+        $totalDespesa = Despesa::where('mes_id', $mesId)->sum('valor');
+
+        // ✅ Otimização: update direto sem carregar o model
+        Mes::where('id', $mesId)->update([
+            'despesa' => $totalDespesa,
+            'total' => DB::raw("renda - {$totalDespesa}"),
+        ]);
     }
 }

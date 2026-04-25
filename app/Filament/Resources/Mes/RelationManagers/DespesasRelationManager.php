@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\MesResource\RelationManagers;
+namespace App\Filament\Resources\Mes\RelationManagers;
 
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;

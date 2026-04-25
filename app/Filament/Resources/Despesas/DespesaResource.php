@@ -39,7 +39,8 @@ class DespesaResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return DespesasTable::configure($table);
+        return DespesasTable::configure($table)
+            ->modifyQueryUsing(fn ($query) => $query->with(['user', 'categoria', 'mes', 'ano']));
     }
 
     public static function getRelations(): array

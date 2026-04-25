@@ -20,9 +20,14 @@ class Mes extends Model
 
     protected $casts = [
         'despesa' => 'decimal:2',
-        'renda' => 'decimal:2', 
+        'renda' => 'decimal:2',
         'total' => 'decimal:2',
     ];
+
+    /**
+     * Relações carregadas automaticamente para evitar N+1 queries.
+     */
+    protected $with = ['ano'];
 
     public function ano(): BelongsTo
     {
