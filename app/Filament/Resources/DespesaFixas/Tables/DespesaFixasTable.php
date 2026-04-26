@@ -17,16 +17,25 @@ class DespesaFixasTable
         return $table
             ->columns([
                 TextColumn::make('nome')
-                    ->searchable(),
+                    ->label('Descrição')
+                    ->searchable()
+                    ->weight('bold'),
+
                 TextColumn::make('valor')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('categoria_id')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Valor')
+                    ->money('BRL')
+                    ->sortable()
+                    ->color('danger'),
+
+                TextColumn::make('user.name')
+                    ->label('Usuário')
+                    ->searchable(),
+
+                 TextColumn::make('categoria.nome')
+                    ->label('Categoria')
+                    ->badge()
+                    ->searchable(),
+                    
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

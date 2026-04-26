@@ -21,7 +21,7 @@ class DespesaResource extends Resource
 {
     protected static ?string $model = Despesa::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowTrendingDown;
 
     protected static ?string $recordTitleAttribute = 'Despesas Variaveis';
 

@@ -21,7 +21,7 @@ class RendaFixaResource extends Resource
 {
     protected static ?string $model = RendaFixa::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowTrendingUp;
 
     protected static ?string $recordTitleAttribute = 'Rendas Fixas';
 

@@ -21,11 +21,11 @@ class CategoriaDespesaResource extends Resource
 {
     protected static ?string $model = CategoriaDespesa::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
     protected static ?string $recordTitleAttribute = 'Catégoria de despesas';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Catégorias';
+    protected static string|UnitEnum|null $navigationGroup = 'Despesas';
 
     public static function form(Schema $schema): Schema
     {

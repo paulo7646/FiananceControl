@@ -17,18 +17,33 @@ class RendasTable
         return $table
             ->columns([
                 TextColumn::make('nome')
-                    ->searchable(),
-                TextColumn::make('valor')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Descrição')
+                    ->searchable()
+                    ->weight('bold'),
+                
+               TextColumn::make('valor')
+                    ->label('Valor')
+                    ->money('BRL')
+                    ->sortable()
+                    ->color('success'),
+                
                 TextColumn::make('user.name')
+                    ->label('Usuário')
                     ->searchable(),
-                TextColumn::make('categoria.id')
+                
+                TextColumn::make('categoria.nome')
+                    ->label('Categoria')
+                    ->badge()
                     ->searchable(),
-                TextColumn::make('mes.id')
+                
+                TextColumn::make('mes.nome')
+                    ->label('Mês')
                     ->searchable(),
-                TextColumn::make('ano.id')
+                
+                TextColumn::make('ano.nome')
+                    ->label('Mês')
                     ->searchable(),
+                
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

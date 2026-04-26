@@ -18,15 +18,23 @@ class RendaForm
                     ->numeric(),
                 Select::make('user_id')
                     ->relationship('user', 'name')
+                    ->searchable()
+                    ->preload()
                     ->required(),
                 Select::make('categoria_id')
-                    ->relationship('categoria', 'id')
+                    ->relationship('categoria', 'nome')
+                    ->searchable()
+                    ->preload()
                     ->required(),
                 Select::make('mes_id')
-                    ->relationship('mes', 'id')
+                    ->relationship('mes', 'nome')
+                    ->searchable()
+                    ->preload()
                     ->required(),
                 Select::make('ano_id')
-                    ->relationship('ano', 'id')
+                    ->relationship('ano', 'nome')
+                    ->searchable()
+                    ->preload()
                     ->required(),
             ]);
     }

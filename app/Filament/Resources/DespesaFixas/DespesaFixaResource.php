@@ -22,7 +22,7 @@ class DespesaFixaResource extends Resource
 {
     protected static ?string $model = DespesaFixa::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowTrendingDown;
 
     protected static ?string $recordTitleAttribute = 'Despesas Fixas';
 

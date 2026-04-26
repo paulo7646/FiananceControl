@@ -14,7 +14,7 @@ class DespesaForm
         return $schema->components([
 
             TextInput::make('nome')
-                ->label('Descrição')
+                ->label('Nome')
                 ->required()
                 ->maxLength(255),
 
@@ -23,9 +23,6 @@ class DespesaForm
                 ->required()
                 ->numeric()
                 ->prefix('R$'),
-
-            Toggle::make('pago')
-                ->label('Pago'),
 
             Select::make('user_id')
                 ->relationship('user', 'name')
@@ -47,6 +44,16 @@ class DespesaForm
                 ->searchable()
                 ->preload()
                 ->required(),
+            
+            Select::make('ano_id')
+                ->relationship('ano', 'nome')
+                ->label('Ano')
+                ->searchable()
+                ->preload()
+                ->required(),
+            
+            Toggle::make('pago')
+                ->label('Pago'),
         ]);
     }
 }

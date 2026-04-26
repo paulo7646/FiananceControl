@@ -21,7 +21,7 @@ class RendaResource extends Resource
 {
     protected static ?string $model = Renda::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowTrendingUp;
 
     protected static ?string $recordTitleAttribute = 'Rendas variaveis';
 

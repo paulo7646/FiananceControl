@@ -21,11 +21,11 @@ class CategoriaRendaResource extends Resource
 {
     protected static ?string $model = CategoriaRenda::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
     protected static ?string $recordTitleAttribute = 'Catégorias de renda';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Catégorias';
+    protected static string|UnitEnum|null $navigationGroup = 'Rendas';
 
     public static function form(Schema $schema): Schema
     {

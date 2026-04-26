@@ -46,6 +46,10 @@ class DespesasTable
                 TextColumn::make('mes.nome')
                     ->label('Mês')
                     ->searchable(),
+                
+                TextColumn::make('ano.nome')
+                    ->label('Ano')
+                    ->searchable(),
 
                 TextColumn::make('created_at')
                     ->dateTime()
