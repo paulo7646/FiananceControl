@@ -15,6 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
 use Filament\Tables\Grouping\Group;
+use Filament\Forms\Components\Hidden;
 
 class DespesasRelationManager extends RelationManager
 {
@@ -49,17 +50,7 @@ class DespesasRelationManager extends RelationManager
                 ->required()
                 ->numeric()
                 ->prefix('R$'),
-
-            Toggle::make('pago')
-                ->label('Pago'),
-
-            Select::make('categoria_id')
-                ->relationship('categoria', 'nome')
-                ->label('Categoria')
-                ->searchable()
-                ->preload()
-                ->required(),
-
+            
             Select::make('user_id')
                 ->relationship('user', 'name')
                 ->label('Usuário')
@@ -67,12 +58,17 @@ class DespesasRelationManager extends RelationManager
                 ->preload()
                 ->required(),
 
-            Select::make('ano_id')
-                ->relationship('ano', 'nome')
-                ->label('Ano')
+            Select::make('categoria_id')
+                ->relationship('categoria', 'nome')
+                ->label('Categoria')
                 ->searchable()
                 ->preload()
                 ->required(),
+            
+            Hidden::make('ano_id')->default(fn () => $this->ownerRecord->ano_id),
+            
+            Toggle::make('pago')
+                ->label('Pago'),
         ])->columns(2);
     }
 

@@ -33,6 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->globalSearch(false)
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -43,7 +44,7 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->plugins([
-                QuickCreatePlugin::make(),
+                QuickCreatePlugin::make()->sortBy('false'),
             ])
             ->widgets([
                 FinanceWidget::class,

@@ -14,6 +14,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
 use Filament\Tables\Grouping\Group;
+use Filament\Forms\Components\Hidden;
 
 class RendasRelationManager extends RelationManager
 {
@@ -34,7 +35,6 @@ class RendasRelationManager extends RelationManager
 
         $this->dispatch('mes-updated');
     }
-
 
 
     public function form(Schema $schema): Schema
@@ -68,12 +68,7 @@ class RendasRelationManager extends RelationManager
                     ->preload()
                     ->required(),
 
-                Select::make('ano_id')
-                    ->relationship('ano', 'nome')
-                    ->label('Ano')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+                Hidden::make('ano_id')->default(fn () => $this->ownerRecord->ano_id),
             ])
             ->columns(2);
     }
