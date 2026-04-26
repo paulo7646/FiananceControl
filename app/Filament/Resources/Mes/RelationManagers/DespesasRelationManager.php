@@ -104,6 +104,7 @@ class DespesasRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('nome')
+            ->modifyQueryUsing(fn ($query) => $query->with(['categoria', 'user', 'ano']))
 
             /**
              * 📦 GROUPS (corrigido)

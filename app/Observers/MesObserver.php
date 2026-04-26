@@ -20,8 +20,7 @@ class MesObserver
         }
 
         // 🔴 DESPESAS FIXAS → DESPESAS DO MÊS
-        // ✅ Otimização: seleciona apenas colunas necessárias para reduzir memória
-        $despesasFixas = DespesaFixa::select(['nome', 'valor', 'user_id', 'categoria_id'])->get();
+        $despesasFixas = DespesaFixa::all();
 
         if ($despesasFixas->isNotEmpty()) {
             $despesas = $despesasFixas->map(fn ($fixa) => [
@@ -39,8 +38,7 @@ class MesObserver
         }
 
         // 🟢 RENDAS FIXAS → RENDAS DO MÊS
-        // ✅ Otimização: seleciona apenas colunas necessárias para reduzir memória
-        $rendasFixas = RendaFixa::select(['nome', 'valor', 'user_id', 'categoria_id'])->get();
+        $rendasFixas = RendaFixa::all();
 
         if ($rendasFixas->isNotEmpty()) {
             $rendas = $rendasFixas->map(fn ($fixa) => [

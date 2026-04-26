@@ -12,35 +12,4 @@ use App\Models\Renda;
 class CreateMes extends CreateRecord
 {
     protected static string $resource = MesResource::class;
-
-    protected function afterCreate(): void
-    {
-        $mes = $this->record;
-
-        // 🔴 Despesas Fixas → virar Despesas do mês
-        $despesasFixas = DespesaFixa::all();
-
-        foreach ($despesasFixas as $fixa) {
-            Despesa::create([
-                'nome' => $fixa->nome,
-                'valor' => $fixa->valor,
-                'mes_id' => $mes->id,
-                'user_id' => $fixa->user_id,
-                'categoria_id' => $fixa->categoria_id,
-            ]);
-        }
-
-        // 🟢 Rendas Fixas → virar Rendas do mês
-        $rendasFixas = RendaFixa::all();
-
-        foreach ($rendasFixas as $fixa) {
-            Renda::create([
-                'nome' => $fixa->nome,
-                'valor' => $fixa->valor,
-                'mes_id' => $mes->id,
-                'user_id' => $fixa->user_id,
-                'categoria_id' => $fixa->categoria_id,
-            ]);
-        }
-    }
 }

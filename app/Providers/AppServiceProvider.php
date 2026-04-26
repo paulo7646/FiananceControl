@@ -32,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        DB::statement("PRAGMA journal_mode = WAL;");
+        DB::statement("PRAGMA synchronous = NORMAL;");
+        DB::statement("PRAGMA cache_size = 10000;");
+        DB::statement("PRAGMA temp_store = MEMORY;");
+
         $this->configureDefaults();
         Despesa::observe(DespesaObserver::class);
         Renda::observe(RendaObserver::class);

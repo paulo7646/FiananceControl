@@ -21,9 +21,10 @@ class Renda extends Model
     ];
 
     /**
-     * Relações carregadas automaticamente para evitar N+1 queries.
+     * ⚠️ REMOVIDO: $with carregava 4 relações em TODAS as queries,
+     * inclusive agregações SUM/COUNT. O eager loading deve ser
+     * explicitado onde necessário (Resources, Controllers).
      */
-    protected $with = ['user', 'categoria', 'mes', 'ano'];
 
     public function user(): BelongsTo
     {

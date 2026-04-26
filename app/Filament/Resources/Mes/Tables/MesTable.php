@@ -16,6 +16,7 @@ class MesTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn ($query) => $query->with(['ano']))
             ->columns([
                 TextColumn::make('nome')
                     ->label('Mês')

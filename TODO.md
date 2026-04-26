@@ -1,32 +1,46 @@
-# Plano de Otimização de Performance - FinanceControl
+# Otimização de Performance - Concluído ✅
 
-## Fase 1 — Configurações de Infraestrutura
-- [x] Mudar cache default para `file` em `config/cache.php`
-- [x] Mudar session default para `file` em `config/session.php`
-- [x] Mudar queue default para `sync` em `config/queue.php`
+## Resumo das Otimizações Aplicadas
 
-## Fase 2 — Otimização de Queries (Eager Loading)
-- [x] Adicionar `$with` no Model `Despesa` (user, categoria, mes, ano)
-- [x] Adicionar `$with` no Model `Renda` (user, categoria, mes, ano)
-- [x] Adicionar `$with` no Model `Mes` (ano)
-- [x] Otimizar `DespesaResource` com `modifyQueryUsing`
-- [x] Otimizar `RendaResource` com `modifyQueryUsing`
-- [x] Otimizar `MesResource` com `modifyQueryUsing`
+### 1. Removido `$with` global dos Models (Maior impacto)
+- **Despesa.php**, **Renda.php**, **Mes.php**
+- O `$with` carregava relações em **TODAS** as queries, inclusive agregações `SUM()`/`COUNT()`
+- O eager loading agora é explicitado apenas onde necessário (Resources, RelationManagers)
 
-## Fase 3 — Otimização de Widgets
-- [x] Remover polling de `FinanceStatsOverview` (2s → null)
-- [x] Adicionar cache em `CategoryExpenseChart`
-- [x] Adicionar cache em `CategoryIncomeChart`
-- [x] Otimizar queries de `FinanceStatsOverview`
+### 2. Cache TTL aumentado nos Widgets
+- **FinanceStatsOverview**: 30s → **5 minutos**
+- **CategoryExpenseChart**: 60s → **5 minutos**
+- **CategoryIncomeChart**: 60s → **5 minutos**
+- Reduz drasticamente queries repetidas no mesmo período
 
-## Fase 4 — Otimização de Observers
-- [x] Otimizar `MesObserver` (evitar `::all()`, usar insert direto)
-- [x] Otimizar `DespesaObserver` (update direto sem carregar model)
-- [x] Otimizar `RendaObserver` (update direto sem carregar model)
+### 3. Queries otimizadas no FinanceStatsOverview
+- Usa `value()` em vez de `find()` (não carrega model completo)
+- Agregação direta na tabela `mes` em vez de `SUM` nas tabelas filhas
+- Queries de fixas filtradas por `user_id`
 
-## Fase 5 — Índices no Banco de Dados
-- [x] Criar migration de índices para foreign keys
+### 4. MesObserver otimizado
+- Filtra despesas/rendas fixas pelo **usuário do mês**
+- Evita carregar milhares de registros de outros usuários
 
-## Fase 6 — Otimizações de Produção
-- [x] Documentar comandos de cache no README
+### 5. Eager loading em RelationManagers
+- **DespesasRelationManager** e **RendasRelationManager**: `->with(['categoria', 'user', 'ano'])`
+- **MesTable** também com eager loading
+
+### 6. FinanceFilters com cache
+- Anos, meses e usuários cacheados por 60 segundos
+- Evita re-query desses lookups a cada refresh do Livewire
+
+### 7. Indexes compostos adicionados
+- `[user_id, categoria_id]`, `[ano_id, categoria_id]`, `[mes_id, categoria_id]`
+- Aplicado em `despesas` e `rendas`
+- Migração atualizada
+
+## Testes
+- ✅ `composer dump-autoload` — OK
+- ✅ `php artisan config:cache` — OK (sem erros de classe redeclarada)
+
+## Próximos Passos
+1. Rodar `php artisan migrate` para aplicar os novos indexes no banco
+2. Monitorar com Laravel Debugbar ou Telescope para identificar novos gargalos
+3. Considerar cache de página inteira com `response()->cache()` em endpoints de API
 

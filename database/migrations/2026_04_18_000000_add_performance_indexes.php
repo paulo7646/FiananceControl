@@ -21,6 +21,9 @@ return new class extends Migration
             $table->index('ano_id');
             $table->index(['user_id', 'mes_id']);
             $table->index(['user_id', 'ano_id']);
+            $table->index(['user_id', 'categoria_id']);
+            $table->index(['ano_id', 'categoria_id']);
+            $table->index(['mes_id', 'categoria_id']);
         });
 
         Schema::table('rendas', function (Blueprint $table) {
@@ -30,6 +33,9 @@ return new class extends Migration
             $table->index('ano_id');
             $table->index(['user_id', 'mes_id']);
             $table->index(['user_id', 'ano_id']);
+            $table->index(['user_id', 'categoria_id']);
+            $table->index(['ano_id', 'categoria_id']);
+            $table->index(['mes_id', 'categoria_id']);
         });
 
         Schema::table('despesa_fixas', function (Blueprint $table) {
@@ -59,6 +65,9 @@ return new class extends Migration
             $table->dropIndex(['ano_id']);
             $table->dropIndex(['user_id', 'mes_id']);
             $table->dropIndex(['user_id', 'ano_id']);
+            $table->dropIndex(['user_id', 'categoria_id']);
+            $table->dropIndex(['ano_id', 'categoria_id']);
+            $table->dropIndex(['mes_id', 'categoria_id']);
         });
 
         Schema::table('rendas', function (Blueprint $table) {
@@ -68,6 +77,9 @@ return new class extends Migration
             $table->dropIndex(['ano_id']);
             $table->dropIndex(['user_id', 'mes_id']);
             $table->dropIndex(['user_id', 'ano_id']);
+            $table->dropIndex(['user_id', 'categoria_id']);
+            $table->dropIndex(['ano_id', 'categoria_id']);
+            $table->dropIndex(['mes_id', 'categoria_id']);
         });
 
         Schema::table('despesa_fixas', function (Blueprint $table) {

@@ -114,6 +114,7 @@ class RendasRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('nome')
+            ->modifyQueryUsing(fn ($query) => $query->with(['categoria', 'user', 'ano']))
             ->groups([Group::make('user.name')->collapsible(),
                       Group::make('categoria.nome')->collapsible(),  
         ])

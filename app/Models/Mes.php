@@ -25,9 +25,9 @@ class Mes extends Model
     ];
 
     /**
-     * Relações carregadas automaticamente para evitar N+1 queries.
+     * ⚠️ REMOVIDO: $with carregava 'ano' em TODAS as queries.
+     * O eager loading deve ser explicitado onde necessário.
      */
-    protected $with = ['ano'];
 
     public function ano(): BelongsTo
     {
