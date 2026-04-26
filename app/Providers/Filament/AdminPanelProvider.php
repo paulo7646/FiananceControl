@@ -20,6 +20,9 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Widgets\FinanceWidget;
 use App\Filament\Widgets\DespesasPorCategoriaChart;
+use App\Filament\Widgets\RendasPorCategoriaChart;
+use App\Filament\Widgets\DespesasPorMesChart;
+use App\Filament\Widgets\RendaPorMesChart;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -41,6 +44,9 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 FinanceWidget::class,
                 DespesasPorCategoriaChart::class,
+                RendasPorCategoriaChart::class,
+                DespesasPorMesChart::class,
+                RendaPorMesChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
