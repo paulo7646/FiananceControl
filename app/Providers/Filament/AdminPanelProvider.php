@@ -23,6 +23,7 @@ use App\Filament\Widgets\DespesasPorCategoriaChart;
 use App\Filament\Widgets\RendasPorCategoriaChart;
 use App\Filament\Widgets\DespesasPorMesChart;
 use App\Filament\Widgets\RendaPorMesChart;
+use Awcodes\QuickCreate\QuickCreatePlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -40,6 +41,9 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
                 Dashboard::class,
+            ])
+            ->plugins([
+                QuickCreatePlugin::make(),
             ])
             ->widgets([
                 FinanceWidget::class,
