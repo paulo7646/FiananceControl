@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 
 class UserInfolist
@@ -11,27 +13,33 @@ class UserInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
-                TextEntry::make('email')
-                    ->label('Email address'),
-                TextEntry::make('email_verified_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('two_factor_secret')
-                    ->placeholder('-')
-                    ->columnSpanFull(),
-                TextEntry::make('two_factor_recovery_codes')
-                    ->placeholder('-')
-                    ->columnSpanFull(),
-                TextEntry::make('two_factor_confirmed_at')
-                    ->dateTime()
-                    ->placeholder('-'),
+                Tabs::make('Usuário')
+                    ->columnSpanFull()
+                    ->tabs([
+                        Tab::make('Geral')
+                            ->columns(2)
+                            ->schema([
+                                TextEntry::make('name')
+                                    ->label('Nome'),
+                                
+                                TextEntry::make('email')
+                                    ->label('Email'),
+                            ]),
+
+                        Tab::make('Informações')
+                            ->columns(2)
+                            ->schema([
+                                TextEntry::make('created_at')
+                                    ->label('Criado em')
+                                    ->dateTime('d/m/Y H:i')
+                                    ->placeholder('-'),
+
+                                TextEntry::make('updated_at')
+                                    ->label('Atualizado em')
+                                    ->dateTime('d/m/Y H:i')
+                                    ->placeholder('-'),
+                            ]),
+                    ]),
             ]);
     }
 }

@@ -14,20 +14,16 @@ class UserForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Nome')
                     ->required(),
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Email')
                     ->email()
                     ->required(),
-                DateTimePicker::make('email_verified_at'),
                 TextInput::make('password')
+                    ->label('Senha')
                     ->password()
                     ->required(),
-                Textarea::make('two_factor_secret')
-                    ->columnSpanFull(),
-                Textarea::make('two_factor_recovery_codes')
-                    ->columnSpanFull(),
-                DateTimePicker::make('two_factor_confirmed_at'),
             ]);
     }
 }
